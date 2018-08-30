@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import com.bignerdranch.android.beatbox.databinding.FragmentBeatBoxBinding;
 import com.bignerdranch.android.beatbox.databinding.ListItemSoundBinding;
 
+import java.util.List;
+
 /**
  * Created by djn on 8/29/18.
  */
@@ -33,7 +35,7 @@ public class BeatBoxFragment extends Fragment {
 
         binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         //RecyclerView delegates the job of positioning items on the screen to a LayoutManager.
-        binding.recyclerView.setAdapter(new SoundAdapter());
+        binding.recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
 
         return binding.getRoot();
     }
@@ -51,9 +53,19 @@ public class BeatBoxFragment extends Fragment {
     private class SoundHolder extends RecyclerView.ViewHolder {
         private ListItemSoundBinding mBinding;
 
+        /**
+         * Inflates the held view through binding, sets the ViewModle of the binding
+         * @param binding
+         */
         private SoundHolder(ListItemSoundBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
+            mBinding.setViewModel(new SoundViewModel(mBeatBox));
+        }
+
+        public void bind(Sound sound) {
+            mBinding.getViewModel().setSound(sound);
+            mBinding.executePendingBindings();
         }
     }
 
@@ -61,9 +73,21 @@ public class BeatBoxFragment extends Fragment {
      * getItemCount() is first called to return an item count. Then onCreateViewHolder is called
      * to create a new SoundHolder, inflating the view held by SoundHolder, then return it.
      * Finally, the RecyclerView calls onBindViewHolder, binding the model data for that position to
-     * the ViewHolder's view.
+     * the ViewHolder's view (wiring up mSounds to SoundHolder).
      */
     private class SoundAdapter extends RecyclerView.Adapter<SoundHolder> {
+        private List<Sound> mSounds;
+
+        private SoundAdapter(List<Sound> sounds) {
+            mSounds = sounds;
+        }
+
+        /**
+         * Inflates the viewholder, gets the corresponding binding, creates a SoundHolder
+         * @param parent
+         * @param viewType
+         * @return
+         */
         @Override
         public SoundHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -72,14 +96,20 @@ public class BeatBoxFragment extends Fragment {
             return new SoundHolder(binding);
         }
 
+        /**
+         * binds the sound at a certain position to that SoundHolder
+         * @param holder
+         * @param position
+         */
         @Override
         public void onBindViewHolder(SoundHolder holder, int position) {
-
+            Sound sound = mSounds.get(position);
+            holder.bind(sound);
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return mSounds.size();
         }
     }
 }
