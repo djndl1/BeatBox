@@ -43,8 +43,15 @@ public class BeatBoxFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         mBeatBox = new BeatBox(getActivity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBeatBox.release();
     }
 
     /**SoundHolder holds the View object to be displayer in a RecyclerView
@@ -95,6 +102,7 @@ public class BeatBoxFragment extends Fragment {
                     parent, false);
             return new SoundHolder(binding);
         }
+
 
         /**
          * binds the sound at a certain position to that SoundHolder

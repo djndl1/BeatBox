@@ -85,6 +85,13 @@ public class BeatBox {
         //volumeRange = 0.0 to 1.0; no loop; normal rate
     }
 
+    /**
+     * Release all memory and native resources used by the SoundPool object
+     */
+    public void release() {
+        mSoundPool.release();
+    }
+
     public List<Sound> getSounds() {
         return mSounds;
     }
