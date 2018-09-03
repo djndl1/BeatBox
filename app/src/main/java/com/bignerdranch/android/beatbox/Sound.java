@@ -7,7 +7,8 @@ package com.bignerdranch.android.beatbox;
 /**
  * Records the filename and the pathname of a sound file
  */
-public class Sound {
+public class Sound
+{
     private String mAssetPath;
     private String mName;
     private Integer mSoundId;
@@ -17,27 +18,31 @@ public class Sound {
      * gets the file name from the path name
      * @param assetPath pathname
      */
-    public Sound(String assetPath) {
+    public Sound(String assetPath)
+    {
         mAssetPath = assetPath;
         String[] components = assetPath.split("/");
         String filename = components[components.length-1];
         mName = filename.replace(".wav","");
     }
 
-    public String getAssetPath() {
+    public String getAssetPath()
+    {
         return mAssetPath;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return mName;
     }
 
-    public void setSoundId(Integer soundId) {
+    public void setSoundId(Integer soundId)
+    {
         mSoundId = soundId;
     }
 
-    public Integer getSoundId() {
-
+    public Integer getSoundId()
+    {
         return mSoundId;
     }
 }

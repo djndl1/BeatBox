@@ -18,17 +18,19 @@ import java.util.List;
  * Created by djn on 8/29/18.
  */
 
-public class BeatBoxFragment extends Fragment {
+public class BeatBoxFragment extends Fragment
+{
 
     private BeatBox mBeatBox;
 
-    public static BeatBoxFragment newInstance() {
+    public static BeatBoxFragment newInstance()
+    {
         return new BeatBoxFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         //Inflates a binding layout and returns the newly-created binding for that layout.
         FragmentBeatBoxBinding binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_beat_box, container, false);
@@ -41,7 +43,8 @@ public class BeatBoxFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
@@ -49,7 +52,8 @@ public class BeatBoxFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
         mBeatBox.release();
     }
@@ -57,20 +61,23 @@ public class BeatBoxFragment extends Fragment {
     /**SoundHolder holds the View object to be displayer in a RecyclerView
      *
      */
-    private class SoundHolder extends RecyclerView.ViewHolder {
+    private class SoundHolder extends RecyclerView.ViewHolder
+    {
         private ListItemSoundBinding mBinding;
 
         /**
          * Inflates the held view through binding, sets the ViewModle of the binding
          * @param binding
          */
-        private SoundHolder(ListItemSoundBinding binding) {
+        private SoundHolder(ListItemSoundBinding binding)
+        {
             super(binding.getRoot());
             mBinding = binding;
             mBinding.setViewModel(new SoundViewModel(mBeatBox));
         }
 
-        public void bind(Sound sound) {
+        public void bind(Sound sound)
+        {
             mBinding.getViewModel().setSound(sound);
             mBinding.executePendingBindings();
         }
@@ -82,10 +89,12 @@ public class BeatBoxFragment extends Fragment {
      * Finally, the RecyclerView calls onBindViewHolder, binding the model data for that position to
      * the ViewHolder's view (wiring up mSounds to SoundHolder).
      */
-    private class SoundAdapter extends RecyclerView.Adapter<SoundHolder> {
+    private class SoundAdapter extends RecyclerView.Adapter<SoundHolder>
+    {
         private List<Sound> mSounds;
 
-        private SoundAdapter(List<Sound> sounds) {
+        private SoundAdapter(List<Sound> sounds)
+        {
             mSounds = sounds;
         }
 
@@ -96,7 +105,8 @@ public class BeatBoxFragment extends Fragment {
          * @return
          */
         @Override
-        public SoundHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public SoundHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             ListItemSoundBinding binding = DataBindingUtil.inflate(inflater, R.layout.list_item_sound,
                     parent, false);
@@ -110,13 +120,15 @@ public class BeatBoxFragment extends Fragment {
          * @param position
          */
         @Override
-        public void onBindViewHolder(SoundHolder holder, int position) {
+        public void onBindViewHolder(SoundHolder holder, int position)
+        {
             Sound sound = mSounds.get(position);
             holder.bind(sound);
         }
 
         @Override
-        public int getItemCount() {
+        public int getItemCount()
+        {
             return mSounds.size();
         }
     }

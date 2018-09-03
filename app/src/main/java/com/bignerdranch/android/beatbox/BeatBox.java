@@ -16,13 +16,14 @@ import java.util.List;
  */
 
 /**
- * A BeatBox class, loading sounds from the SOUNDS_FOLDER. A getter method is here to retrieve these
- * sounds.
+ * A BeatBox class, loading sounds from the SOUNDS_FOLDER and playing them.
+ * A getter method is here to retrieve these sounds.
  * mAssests - an AssetManager
  * mSounds - A list of sound objects
  * mSoundPool - A SoundPool for loading and playing audio
  */
-public class BeatBox {
+public class BeatBox
+{
     private static final String TAG = "BeatBox";
 
     private static final String SOUNDS_FOLDER = "sample_sounds";
@@ -32,7 +33,8 @@ public class BeatBox {
     private List<Sound> mSounds = new ArrayList<>();
     private SoundPool mSoundPool;
 
-    public BeatBox(Context context) {
+    public BeatBox(Context context)
+    {
         mAssests = context.getAssets(); //returns an AssetManager instance for the application's package
         mSoundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0);
         loadSounds();
@@ -41,7 +43,8 @@ public class BeatBox {
     /**
      * Loads sounds into mSounds by their soundnames
      */
-    private void loadSounds() {
+    private void loadSounds()
+    {
         String[] soundNames;
 
         //Puts the names of all sound files into soundNames
@@ -53,14 +56,13 @@ public class BeatBox {
             return;
         }
 
-        /*
-         generates a Sound object for each soundfile, sets its soundId, adds to mSounds
-          */
+
+        // generates a Sound object for each soundfile, sets its soundId, adds to mSounds
         for (String filename : soundNames) {
             try {
                 String assetPath = SOUNDS_FOLDER + "/" + filename;
                 Sound sound = new Sound(assetPath);
-                load(sound);
+                load(sound);// loads the sound into mSoundPool
                 mSounds.add(sound);
             } catch (IOException ioe) {
                 Log.e(TAG, "Could not load sound" + filename, ioe);
@@ -68,7 +70,13 @@ public class BeatBox {
         }
     }
 
-    private void load(Sound sound) throws IOException {
+    /**
+     * Gets the AssetFileDescriptor of a sound object and load it into mSoundPool, setting its SoundId
+     * @param sound an object having the soundname, path and SoundId
+     * @throws IOException
+     */
+    private void load(Sound sound) throws IOException
+    {
         AssetFileDescriptor afd = mAssests.openFd(sound.getAssetPath());
         // gets a FileDescriptor for reading the file
         int soundId = mSoundPool.load(afd, 1);
@@ -76,7 +84,12 @@ public class BeatBox {
         sound.setSoundId(soundId);
     }
 
-    public void play(Sound sound) {
+    /**
+     * Plays a sound, no loop, at normal rate, maximum volume
+     * @param sound
+     */
+    public void play(Sound sound)
+    {
         Integer soundId = sound.getSoundId();
         if (soundId == null) {
             return;
@@ -88,11 +101,13 @@ public class BeatBox {
     /**
      * Release all memory and native resources used by the SoundPool object
      */
-    public void release() {
+    public void release()
+    {
         mSoundPool.release();
     }
 
-    public List<Sound> getSounds() {
+    public List<Sound> getSounds()
+    {
         return mSounds;
     }
 }
